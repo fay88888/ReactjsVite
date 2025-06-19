@@ -11,15 +11,12 @@
     "tailwind-version": "tailwindcss --version"
   },
   "dependencies": {
-<<<<<<< HEAD
-    "@tailwindcss/vite": "^4.1.8",
-    "axios": "^1.9.0",
-=======
     "@tailwindcss/vite": "^4.1.10",
+    "axios": "^1.9.0",
     "bootstrap": "^5.3.6",
->>>>>>> ddc4d6ad0e00fc59ff62e5c9e7b9d8f9ff1c761a
     "react": "^19.1.0",
-    "react-dom": "^19.1.0"
+    "react-dom": "^19.1.0",
+    "react-router-dom": "^7.6.2"
   },
   "devDependencies": {
     "@eslint/js": "^9.25.0",

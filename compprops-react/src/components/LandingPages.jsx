@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from 'react-router-dom';
 
 function LandingPages (){
     
@@ -66,13 +67,19 @@ function LandingPages (){
           </a>
         </div>
         <div className="flex space-x-4 slide-in-right">
-          <button className="text-white hover:text-purple-300 transition-colors">
-            Sign In
-          </button>
-          <button className="bg-white text-purple-600 px-4 py-2 rounded-lg font-medium hover:bg-purple-50 transition-colors pulse-glow">
-            Post Job
-          </button>
+          <Link to="/LoginForm">
+            <button className="text-white hover:text-purple-300 transition-colors">
+              Sign In
+            </button>
+          </Link>
+
+          <Link to="/JobListForm">
+            <button className="bg-white text-purple-600 px-4 py-2 rounded-lg font-medium hover:bg-purple-50 transition-colors pulse-glow">
+              Post Job
+            </button>
+          </Link>
         </div>
+
       </div>
     </div>
   </nav>
