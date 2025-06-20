@@ -377,7 +377,14 @@ function LandingPages (){
 {selectedJob && (
   <JobDetailDialog isOpen={isOpen} onClose={() => setIsOpen(false)}>
     <div className="bg-white border rounded-2xl p-6 shadow-lg">
-
+      <h3 className="text-2xl font-bold mb-2">{selectedJob.title}</h3>
+      <p className="text-gray-700 mb-1">Company: {selectedJob.company_name}</p>
+      <p className="text-gray-700 mb-1">Location: {selectedJob.company_city}</p>
+      <p className="text-gray-700 mb-1">Type: {selectedJob.job_type}</p>
+      <p className="text-gray-700 mb-1">
+        Salary: Rp.{selectedJob.salary_min} - Rp.{selectedJob.salary_max}
+      </p>
+      {/* Tambah info lainnya sesuai kebutuhan */}
     </div>
   </JobDetailDialog>
 )}
@@ -434,8 +441,9 @@ function LandingPages (){
                 </div>
                 <button
                   onClick={() => {
-                    setSelectedJob(jobs);
-                    setIsOpen(true);
+                      const selected = jobs.find((j) => j.id === job.id);
+                      setSelectedJob(selected);
+                      setIsOpen(true);
                   }}
                   className="w-full mt-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white py-3 rounded-xl font-semibold hover:from-blue-700 hover:to-purple-700 transition-all"
                 >
