@@ -7,11 +7,13 @@ function LandingPages (){
   const [isOpen, setIsOpen] = useState(false);
   const [jobs, setJobs] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [selectedJobId, setSelectedJobId] = useState(null);
   const [selectedJob, setSelectedJob] = useState(null);
+  const [detailLoading, setDetailLoading] = useState(false);
 
 
   useEffect(() => {
-    fetch('https://final-project-api-alpha.vercel.app/api/jobs') // Replace with your API
+    fetch('https://final-project-api-alpha.vercel.app/api/jobs/') 
       .then((res) => res.json())
       .then((data) => {
         setJobs(data);
@@ -24,8 +26,17 @@ function LandingPages (){
       });
   }, []);
 
-
-
+  useEffect(() => {
+    if (isOpen && selectedJobId) {
+      setDetailLoading(true); // mulai loading
+      fetch(`https://final-project-api-alpha.vercel.app/api/jobs/${selectedJobId}`)
+        .then((res) => res.json())
+        .then((data) => setSelectedJob(data))
+        .catch((err) => console.error('Gagal mengambil detail pekerjaan:', err))
+        .finally(() => setDetailLoading(false)); 
+    }
+  }, [isOpen, selectedJobId]);
+  
     return (
 
 <>
@@ -374,17 +385,25 @@ function LandingPages (){
     </div>
   </section>
   {/* Featured Jobs */}
-{selectedJob && (
+  {selectedJob && (
   <JobDetailDialog isOpen={isOpen} onClose={() => setIsOpen(false)}>
-    <div className="bg-white border rounded-2xl p-6 shadow-lg">
-      <h3 className="text-2xl font-bold mb-2">{selectedJob.title}</h3>
-      <p className="text-gray-700 mb-1">Company: {selectedJob.company_name}</p>
-      <p className="text-gray-700 mb-1">Location: {selectedJob.company_city}</p>
-      <p className="text-gray-700 mb-1">Type: {selectedJob.job_type}</p>
-      <p className="text-gray-700 mb-1">
-        Salary: Rp.{selectedJob.salary_min} - Rp.{selectedJob.salary_max}
-      </p>
-      {/* Tambah info lainnya sesuai kebutuhan */}
+    <div className="bg-white border rounded-2xl p-6 shadow-lg min-h-[200px] flex items-center justify-center">
+      {detailLoading ? (
+        <div className="flex flex-col items-center">
+          <div className="animate-spin rounded-full h-10 w-10 border-t-4 border-blue-500 border-solid mb-4"></div>
+          <p className="text-gray-500">Memuat detail pekerjaan...</p>
+        </div>
+      ) : (
+        <div>
+          <h3 className="text-2xl font-bold mb-2">{selectedJob.title}</h3>
+          <p className="text-gray-700 mb-1">Company: {selectedJob.company_name}</p>
+          <p className="text-gray-700 mb-1">Location: {selectedJob.company_city}</p>
+          <p className="text-gray-700 mb-1">Type: {selectedJob.job_type}</p>
+          <p className="text-gray-700 mb-1">
+            Salary: Rp.{selectedJob.salary_min} - Rp.{selectedJob.salary_max}
+          </p>
+        </div>
+      )}
     </div>
   </JobDetailDialog>
 )}
@@ -440,9 +459,8 @@ function LandingPages (){
                 </span>
                 </div>
                 <button
-                  onClick={() => {
-                      const selected = jobs.find((j) => j.id === job.id);
-                      setSelectedJob(selected);
+                    onClick={() => {
+                      setSelectedJobId(job.id);
                       setIsOpen(true);
                   }}
                   className="w-full mt-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white py-3 rounded-xl font-semibold hover:from-blue-700 hover:to-purple-700 transition-all"
